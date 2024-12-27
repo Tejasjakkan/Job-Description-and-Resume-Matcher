@@ -117,9 +117,3 @@ This solution is ideal for organizations looking to streamline their hiring proc
 
 ---
 
-## Contact
-For questions, feedback, or contributions, please contact:
-- **Name**: [Your Name]
-- **Email**: [Your Email]
-- **GitHub**: [Your GitHub Profile]
-
