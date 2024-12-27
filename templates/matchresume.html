@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Matcher</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .card {
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            border-radius: 10px 10px 0 0;
+            padding: 10px 20px;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .table {
+            margin-top: 20px;
+        }
+        .table th, .table td {
+            text-align: center;
+        }
+        .alert-info {
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header text-center">
+                <h2>Job Description and Resume Matcher</h2>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="/match" enctype="multipart/form-data">
+                    <!-- Job Description Input (Text or File Upload) -->
+                    <div class="form-group">
+                        <label for="job_description_text">Job Description (Text):</label>
+                        <textarea class="form-control" name="job_description_text" id="job_description_text" rows="5"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="job_description_file">Or Upload Job Description (PDF, DOCX, TXT):</label>
+                        <input type="file" class="form-control" name="job_description_file" id="job_description_file">
+                    </div>
+
+                    <!-- Resume Uploads -->
+                    <div class="form-group">
+                        <label for="resumes">Upload Resumes (PDF, DOCX, TXT):</label>
+                        <input type="file" class="form-control" name="resumes" id="resumes" multiple>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary mt-3">Match Resumes</button>
+                </form>
+
+                <!-- Results Table -->
+                {% if results %}
+                    <h3 class="mt-5">Matched Resumes</h3>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Filename</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Similarity Score</th>
+                                <th>Keywords</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for result in results %}
+                                <tr>
+                                    <td>{{ result.Filename }}</td>
+                                    <td>{{ result.Email }}</td>
+                                    <td>{{ result.Phone }}</td>
+                                    <td>{{ result['Similarity Score'] }}</td>
+                                    <td>{{ result.Keywords }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <a href="{{ url_for('download_file', filename='resume_results.xlsx') }}" class="btn btn-success mt-3">Download Results</a>
+                {% endif %}
+
+                {% if message %}
+                    <div class="alert alert-info mt-3">{{ message }}</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
